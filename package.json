@@ -1,0 +1,26 @@
+{
+  "name": "dad-joke-api",
+  "version": "1.0.0",
+  "description": "node.js api task",
+  "main": "index.js",
+  "scripts": {
+    "task": "node index.js"
+  },
+  "bin": {
+    "jokes": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seinsdieum/dad-joke-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seinsdieum/dad-joke-api/issues"
+  },
+  "homepage": "https://github.com/seinsdieum/dad-joke-api#readme",
+  "devDependencies": {
+    "@types/node": "^22.13.17"
+  }
+}
