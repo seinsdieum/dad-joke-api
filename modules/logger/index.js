@@ -6,33 +6,29 @@ const colors = {
     blue: '\x1b[34m'
 }
 
-function printJoke(joke, printMetadata = true) {
-    if (!joke) {
-        console.log(colors.red, 'no jokes were found for you...', colors.reset)
-        return
-    }
-
-    if (printMetadata) console.log(colors.blue, 'id\t\t\tjoke', colors.reset)
+function error(message) {
     console.log(
-        colors.yellow,
-        `${joke.id}${joke.count ? `${colors.blue}[${joke.count}]` : ''}`,
-        '\t',
-        colors.green,
-        joke.joke,
+        colors.red,
+        'error:',
+        message || 'message not defined',
         colors.reset
     )
 }
 
-function printLeaderboard(jokes) {
+function joke(joke) {
+    if (!joke) {
+        console.log(colors.red, 'no jokes were found for you...', colors.reset)
+        return
+    }
+    console.log(colors.blue, joke.joke, colors.reset)
+}
+
+function leaderboard(jokes) {
     if (!jokes?.length) {
         console.log(colors.red, 'no jokes for leaderboard...', colors.reset)
         return
     }
-
-    console.log(colors.blue, 'id[<count>]\t\t\tjoke', colors.reset)
-    for (let i of jokes) {
-        printJoke(i, false)
-    }
+    console.table(jokes)
 }
 
-module.exports = { printJoke, printLeaderboard }
+module.exports = { joke, leaderboard, error }

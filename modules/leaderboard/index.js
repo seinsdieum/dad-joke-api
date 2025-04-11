@@ -1,8 +1,8 @@
 function getLeaderboard(jokes) {
-    const map = new Map(jokes.map(item => [item.id, 0]))
+    const map = new Map()
 
     for (let i of jokes) {
-        map.set(i.id, map.get(i.id) + 1)
+        map.set(i.id, (map.get(i.id) ?? 0) + 1)
     }
 
     return [

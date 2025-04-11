@@ -1,4 +1,5 @@
 const https = require('https')
+const logger = require('../logger')
 
 const config = {
     hostname: 'icanhazdadjoke.com',
@@ -7,35 +8,49 @@ const config = {
 }
 
 const fetchRandomJoke = onData => {
-    https.get({ ...config, path: '/' }, res => {
-        let body = ''
-        res.on('data', d => {
-            body += d
-        })
-        res.on('end', () => {
-            onData?.(JSON.parse(body.toString()))
-        })
-    })
-}
-
-const fetchJokesBySearch = (term, page, onData) => {
-    https.get(
-        { ...config, path: `/search?term=${term ?? ''}&page=${page ?? 1}` },
-        res => {
+    https
+        .get({ ...config, path: '/' }, res => {
             let body = ''
             res.on('data', d => {
                 body += d
             })
             res.on('end', () => {
-                onData?.(
-                    JSON.parse(body).results.map(x => ({
-                        id: x.id,
-                        joke: x.joke
-                    }))
-                )
+                onData?.(JSON.parse(body.toString()))
             })
-        }
-    )
+            res.on('error', err => {
+                logger.error(err?.message || 'fetch error')
+            })
+        })
+        .on('error', err => {
+            logger.error(err.name)
+        })
+}
+
+const fetchJokesBySearch = (term, page, onData) => {
+    https
+        .get(
+            { ...config, path: `/search?term=${term ?? ''}&page=${page ?? 1}` },
+            res => {
+                let body = ''
+                res.on('data', d => {
+                    body += d
+                })
+                res.on('end', () => {
+                    onData?.(
+                        JSON.parse(body).results.map(x => ({
+                            id: x.id,
+                            joke: x.joke
+                        }))
+                    )
+                })
+                res.on('error', err => {
+                    logger.error(err?.message || 'fetch error')
+                })
+            }
+        )
+        .on('error', err => {
+            logger.error(err.message)
+        })
 }
 const getRandomJokeFromSearch = (term, onResult, page = 1, jokes = []) => {
     fetchJokesBySearch(term, page, d => {
