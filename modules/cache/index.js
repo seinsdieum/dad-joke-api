@@ -2,6 +2,8 @@ const fs = require('fs/promises')
 const { existsSync } = require('fs')
 const { join } = require('path')
 const { cwd } = process
+const SECOND_IN_MILLISECOND = 1000
+const DEFAULT_TTL = 300
 
 const cacheFile = join(cwd(), '.cli-cache.json')
 
@@ -33,7 +35,10 @@ async function get(key) {
 
 async function add(key, value, ttl) {
   if (!key || !value) return
-  cache[key] = { ...value, ttl: Date.now() + (ttl ?? 300) * 1000 }
+  cache[key] = {
+    ...value,
+    ttl: Date.now() + (ttl ?? DEFAULT_TTL) * SECOND_IN_MILLISECOND
+  }
   await rewrite()
 }
 
