@@ -35,7 +35,6 @@ async function add(key, value, ttl) {
   if (!key || !value) return
   cache[key] = { ...value, ttl: Date.now() + (ttl ?? 300) * 1000 }
   await rewrite()
-  return true
 }
 
 module.exports = { get, add }
