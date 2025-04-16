@@ -1,3 +1,4 @@
 node_modules
 .vscode
 jokes.json
+.cli-cache.json
